@@ -1,0 +1,21 @@
+image: python:latest
+
+variables:
+  app_name: "someapp.py"
+
+
+before_script:
+  - python -V  # Print out python version for debugging
+
+job1:
+  script:
+    - pip install some modules
+
+job2:
+  script:
+    - python $app_name
+
+job3:
+  script:
+    - python setup.py bdist_wheel
+    - pip install .
