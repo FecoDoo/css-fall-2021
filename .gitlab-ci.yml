@@ -1,0 +1,44 @@
+image: python:latest
+
+stages:
+  - lint
+  - test
+  - compile
+  - deploy
+
+variables:
+  app_name: "courses-api:v1"
+  app_file: ""
+
+before_script:
+  - python -V
+  - pip install -r requirements.txt
+
+apilint:
+  stage: lint
+  image: python:3.9-alpine3.14
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  script:
+    - pip3 install pylint
+    - pylint $app_file
+
+apitest:
+  stage: test
+  image: python:3.9-alpine3.14
+  script:
+    - pip3 install pytest
+    - pytest
+
+apicompile:
+  stage: compile
+  image: python:3.9-alpine3.14
+  script:
+    - python setup.py bdist_wheel
+    - python -m compileall .
+
+apideploy:
+  stage: deploy
+  image: docker:19.03.12
+  script:
+    - docker build -t $app_name .
