@@ -8,7 +8,7 @@ stages:
 
 variables:
   app_name: "courses-api:v1"
-  app_file: ""
+  app_file: "main.py"
 
 before_script:
   - python -V
