@@ -21,21 +21,21 @@ apilint:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   script:
     - pip3 install pylint
-    - pylint $app_file
+    - pylint ./app/$app_file
 
 apitest:
   stage: test
   image: python:3.9-alpine3.14
   script:
     - pip3 install pytest
-    - pytest
+    - pytest ./app/
 
 apicompile:
   stage: compile
   image: python:3.9-alpine3.14
   script:
     - python setup.py bdist_wheel
-    - python -m compileall .
+    - python -m compileall ./app/
 
 apideploy:
   stage: deploy
